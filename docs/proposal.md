@@ -66,7 +66,7 @@ We will collect data by ourselves using ESP32 board in this project. We are not 
 
 ### 9.c. Software
 
-We will use the ESP-IDF [] for software development in this project. Common Python libraries such as NumPy, SciPy and Matplotlib will also be adopted in processing the data.
+We will use the ESP-IDF [18] for software development in this project. Common Python libraries such as NumPy, SciPy and Matplotlib will also be adopted in processing the data.
 
 ## 10. References
 
