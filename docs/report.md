@@ -87,10 +87,10 @@ Note that we do not require any modification to the target device, which can ess
 ## Human Motion Detection
 For this task, we decide to use CSI as a metric to detection human motion near a WiFi-enabled device. CSI will be extracted by the sniffer ESP32. Theoretically, the CSI amplitude will be varying dramatically when there is a movement happening nearby, because the channel keeps changing. On the other hand, if the channel is static, the CSI amplitude should be constant. However, we notice that the CSI amplitude also varies slightly when there is no motion around. This is probably due to the unstability of RF front end hardware. As a result, we cannot simply classify whether there is a movement or not by checking if CSI amplitude is constant. 
 
-To deal with this issue, we found that the CSI amplitude varies from one frame to another. The variance of amplitude across a window of successive frames is more significant when there is a motion than there is not. To make this difference more prominent, we need to inject the frames as fast as possible. To achieve this goal, we maximize the CPU frequency of ESP32 to 240MHz and reduced the packet size to increase processing rate. As a result, we reached the frame rate of around 200 frames per second, which gives us a clear distinction between the cases where there is a movement and not, as is shown in the figure below. The CSI amplitude is stabler during 10~40s, as there is no people moving arround.  
-![csi-motion-detection](./media/motion-detection.png)
+To deal with this issue, we devised a signal processing pipeline to process the CSI amplitude data. We notice that to make the difference between two cases more prominent, we need to inject the frames as fast as possible. To achieve this goal, we maximize the CPU frequency of ESP32 to 240MHz and reduced the packet size to increase processing rate. As a result, we reached the frame rate of around 200 frames per second, which gives us a clear distinction between the cases where there is a movement and not, as is shown in the figure below. The CSI amplitude is stabler during 10~40s, as there is no people moving arround.  
+![csi-motion-detection](./media/csi-amplitude.png)
 
-Based on this observation, we built a simple motion detector by thresholding the variance of CSI amplitude. We empirically determined the threshold to _____.  
+Based on this observation, we built a simple motion detector by thresholding the CSI amplitude. We empirically determined the threshold to 0.5.  
 
 ## Localization
 ![localization](./media/localization-setting.png)
@@ -160,9 +160,43 @@ This linear system cannot be solved directly, but we can solve it by Chinese Rem
 Because of the limitation of time, this approach has not been tested in the experiment. 
 
 # 4. Evaluation and Results
+We implemented and evaluated our system using ESP32-CAM development boards. The target devices are chosen as an CTOS TP-Link AX1800 WiFi router and an Pixel 5a mobile phone. These are the available devices for this project, though, according to reference [1], the "Polite WiFi" property works of most of the CTOS wifi devices.
 
+## Human Motion Detection
+The setting for human motion detection is illustrated in the figure of general architecture. The injector is place about one meter away from the target device and the sniffer is sitting in between monitoring the traffic. We built a signal processing pipeline to remove outliers, smooth the data and thresholding to identify the existence of nearby motion. The result is shown in figure below:
+![motion-detector](./media/motion-detector.png)
+Note that there are 64 subcarriers in the previous CSI amplitude plot, while there is only one here. It is because we empirically select ten most sensitive subcarriers and take the average of them. 
+## Localization
+We first put the pair of injector and sniffer close to the target device, in this case, a Pixel 5a mobile phone, to measure the baseline cycle difference. Then put the pair of ESP32 on the wall to measure the increment of cycle difference. The samples collected from the baseline and remote positions demonstrate the multi-band pattern shown in the figure below:
+![diff-baseline](./media/diff-baseline.png)
+The following CDF plot shows the distribution of sample points.
+![cdf-baseline](./media/cdf-baseline.png).
+Around 60% of the points concentrate on the band near 79000 cycles. Around 30% of the points are on the band near 77500. We are still not clear what causes this discrete pattern of distribution. We suspect it is caused by some underlying process that preempt the CPU for a certain time period. However, repetitive experiments reveals that the band near 79000 cycles is a stable band with majority of samples. Therefore, we regards the samples on other bands as outliers and filtered them out. We devised an algorithm to automatically locate the center of the major band and filter out the samples that are too far from the the major band. 
+
+We deployed the ESP32 pairs at three difference remote locations. And measure the average cycle difference. Since we are using the 240 MHz CPU clock, the equation for calculating the distance is:
+$$
+d = (\mu_{anchor}-\mu_{baseline})/240MHz * c
+$$
+where $\mu_{anchor}$ and $\mu_{baseline}$ are the average cycle difference for remote anchor point and baseline respectively. $c$ is the speed of light.
+The samples after filtering are shown below:
+> Anchor Point 1
+![anchor 1](./media/filtered-pt1.png)
+
+> Anchor Point 2
+![anchor 2](./media/filtered-pt2.png)
+
+> Anchor Point 3
+![anchor 3](./media/filtered-pt3.png)
+
+The ground truth of these points are:
+3.7m, 3.9m and 2.0m respectively, as is shown in the following layout diagram below.
+![layout](./media/deployment-layout.png)
+And the estimation results are 8.2m, 8.6m and 2.2m respectively.
+
+Since the maximum CPU frequency for ESP32 is 240MHz and the speed of light is $3 \times 10^8$ m/s. The resolution of distance estimation is 1.25m. Therefore accurate location estimation requires very precision timestamping of cycle difference. Also the indoor multipath environment places more challenges on this task. Further investigation is needed for better distance estimation and localization. 
 
 # 5. Discussion and Conclusions
+In this work, we explore the possibility of using ESP32 for wireless sensing tasks. Our tasks are divided into three levels based on the difficulty: motion detection, localization and respiration rate estimation. We implemented and evaluated the first two tasks and obtained promising results. Because of the limitation of time, we only formulated the theoritical basis for the third task. Real implementation and evaluation requires further effort. 
 
 # 6. References
 [1] Ali Abedi and Omid Abari. 2020. WiFi Says "Hi!" Back to Strangers! In Proceedings of the 19th ACM Workshop on Hot Topics in Networks (HotNets '20). Association for Computing Machinery, New York, NY, USA, 132–138. DOI:https://doi.org/10.1145/3422604.3425951
