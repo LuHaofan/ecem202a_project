@@ -110,52 +110,7 @@ Respiration rate estimation calls for more fine-grained information, since the m
 
 However, the CSI phase extracted from ESP32 is messy, as is shown in the figure below.
 ![csi-phase](./media/csi-phase.png)
-
-It keeps wrapping up between $[-\pi, \pi]$ even though the environment is perfectly static. We made a hypothesis that this is caused by the Carrier Frequency Offset (CFO). 
-In order to resolve the CFO, we leverage the Chinese Reminder Theorem.
-Considering CFO, the received phase consists of three parts.
-$$
-    \phi = \omega t + \alpha + \theta
-$$
-where $\omega$ is the CFO frequency, in other words, the frequency difference between the oscillators at the transmitter and receiver. $\alpha$ is the initial phase difference of the oscillators. $\theta$ is the actual phase caused by the channel.
-
-Suppose at timestamp $T_1$, the measured phase is 
-$$
-\phi_1 = \omega T_1 + \alpha + \theta - 2\pi n_1
-$$
-where $n_1$ is the number of times the phase wraps.
-
-At timestamp $T_2$, the measured phase is 
-$$
-\phi_2 = \omega T_2 + \alpha + \theta - 2\pi n_2
-$$
-
-At timestamp $T_3$, the measured phase is
-$$
-\phi_3 = \omega T_3 + \alpha + \theta - 2\pi n_3
-$$
-
-If we subtract the equations from $T_2$ and $T_1$, we get
-$$
-2\pi (n_2-n_1) + (\phi_2 - \phi_1) = \omega (T_2 -T_1)
-$$
-Note that now there are two unknown variables in this equation: $N_1 = n_2 - n_1$ and $\omega$. 
-
-Subtracting the equations from $T_3$ and $T_2$, we get
-$$
-2\pi (n_3-n_2) + (\phi_3 - \phi_2) = \omega (T_3 -T_2)
-$$
-Again, there is only one new unknown variable in this equation: $N_2 = n_3 - n_2$. 
-If we do this successively, we get a linear system with $K$ equations and $K+1$ unknown variables. 
-$$
-\left\{\begin{array}{r}
-2 \pi N_{1}+\Delta \varphi_{1}=\omega \Delta T_{1} \\
-2 \pi N_{2}+\Delta \varphi_{2}=\omega \Delta T_{2} \\
-\vdots \\
-2 \pi N_{i}+\Delta \varphi_{i}=\omega \Delta T_{i}
-\end{array}\right.
-$$
-This linear system cannot be solved directly, but we can solve it by Chinese Reminder Theorem. The intuition is that since $N_i$ is integer, we can get a value of $\omega$ for each possible value of $N_i$. There exists a set of $N_i$ that gives the same value of $\omega$. And that value is the CFO we are looking for.
+![crt](./media/crt.png)
 
 Because of the limitation of time, this approach has not been tested in the experiment. 
 
