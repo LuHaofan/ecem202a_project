@@ -66,7 +66,7 @@ This discovery empowers us with the capability of learning channel state informa
 ## WiFi Sensing
 There are some existing attempts in using ambient RF signals to do sensing. They can generally be divided into three categories base on the application tasks: detection, recognition and estimation. 
 
-Detection is essentially a binary classification task that answers the question whether or not something happens. For example, human presence detection [1-4] applications detects whether there is a person nearby. Recognition tasks call for a multi-class classifier that extract the exact type of motion. For example, human gesture recognition [12-15] estimates the gesture the user is performing, which explores new approaches for human-machine interaction. More fine-grained information extract from wireless signals can be used in estimation tasks. For example, indoor localization[] and respiration rate estimation[10,16]. 
+Detection is essentially a binary classification task that answers the question whether or not something happens. For example, human presence detection [3-6] applications detects whether there is a person nearby. Recognition tasks call for a multi-class classifier that extract the exact type of motion. For example, human gesture recognition [7-10] estimates the gesture the user is performing, which explores new approaches for human-machine interaction. More fine-grained information extract from wireless signals can be used in estimation tasks. For example, indoor localization[] and respiration rate estimation[11-12]. 
 
 CSI is most wide-adopted metric in the aforemented works. It is essentially the channel frequency response of the WiFi communication channel. CSI is mostly used for channel estimatioin and equalization during wireless communication, so it is generally not accessible from application layer. The opportunity is open by a CSI tool[2] published in 2011 that allow researchers to obtain CSI from the Intel Wifi Link 5300 NIC. However, it is still limited because a laptop equipped with this special NIC is required for the wireless sensing application, which is not really practical. ESP32 recently enables the CSI to be passed to application layer, which opens up the opportunity to make WiFi sensing systems more deployable.
 
@@ -202,3 +202,24 @@ In this work, we explore the possibility of using ESP32 for wireless sensing tas
 [1] Ali Abedi and Omid Abari. 2020. WiFi Says "Hi!" Back to Strangers! In Proceedings of the 19th ACM Workshop on Hot Topics in Networks (HotNets '20). Association for Computing Machinery, New York, NY, USA, 132–138. DOI:https://doi.org/10.1145/3422604.3425951
 
 [2] Daniel Halperin, Wenjun Hu, Anmol Sheth, and David Wetherall. 2011. Tool release: gathering 802.11n traces with channel state information. <i>SIGCOMM Comput. Commun. Rev.</i> 41, 1 (January 2011), 53. DOI:https://doi.org/10.1145/1925861.1925870
+
+[3] Fadel Adib and Dina Katabi. 2013. See through walls with WiFi! In Proceedings oftheACMSIGCOMM2013 Conference on SIGCOMM (SIGCOMM’13). 75–86. DOI:https://doi.org/10.1145/2486001.2486039
+
+[4] Liangyi Gong, Wu Yang, Zimu Zhou, Dapeng Man, Haibin Cai, Xiancun Zhou, and Zheng Yang. 2016. An adap- tive wireless passive human detection via fine-grained physical layer information. Ad Hoc Netw. 38 (2016), 38–50. DOI:https://doi.org/10.1016/j.adhoc.2015.09.005
+
+[5] Sameera Palipana, Piyush Agrawal, and Dirk Pesch. 2016. Channel state information based human presence de- tection using non-linear techniques. In Proceedings ofthe 3rd ACM International Conference on Systems for Energy- Efficient Built Environments (BuildSys’16). 177–186. DOI:https://doi.org/10.1145/2993422.2993579
+
+[6] Kun Qian, Chenshu Wu, Zheng Yang, Yunhao Liu, Fugui He, and Tianzhang Xing. 2018. Enabling contactless de- tection ofmoving humans with dynamic speeds using CSI. ACMTrans.Embed.Comput. Syst. 17, 2, Article 52 (Jan. 2018), 18 pages. DOI:https://doi.org/10.1145/3157677
+
+
+[7] Wenfeng He, Kaishun Wu, Yongpan Zou, and Zhong Ming. 2015. WiG: WiFi-based gesture recognition system. In Proceedings ofthe 2015 24th International Conference on Computer Communication and Networks (ICCCN’15).1–7. DOI:https://doi.org/10.1109/ICCCN.2015.7288485
+
+[8] Pedro Melgarejo, Xinyu Zhang, Parameswaran Ramanathan, and David Chu. 2014. Leveraging directional antenna capabilities for fine-grained gesture recognition. In Proceedings ofthe 2014 ACM International Joint Conference on Pervasive and Ubiquitous Computing (UbiComp’14). 541–551. DOI:https://doi.org/10.1145/2632048.2632095
+
+[9] Kun Qian, Chenshu Wu, Zheng Yang, Yunhao Liu, Fugui He, and Tianzhang Xing. 2018. Enabling contactless de- tection ofmoving humans with dynamic speeds using CSI. ACMTrans.Embed.Comput. Syst. 17, 2, Article 52 (Jan. 2018), 18 pages. DOI:https://doi.org/10.1145/3157677
+
+[10] Aditya Virmani and Muhammad Shahzad. 2017. Position and orientation agnostic gesture recognition using WiFi. In Proceedings ofthe 15th Annual International Conference on Mobile Systems, Applications, and Services (MobiSys’17). 252–264. DOI:https://doi.org/10.1145/3081333.3081340
+
+[11] Xuefeng Liu, Jiannong Cao, Shaojie Tang, Jiaqi Wen, and Peng Guo. 2016. Contactless respiration monitoring via off-the-shelf WiFi devices. IEEE Trans. Mobile Comput. 15, 10 (Oct. 2016), 2466–2479. DOI:https://doi.org/10.1109/ TMC.2015.2504935
+
+[12] Heba Abdelnasser, Khaled A. Harras, and Moustafa Youssef. 2015. UbiBreathe: A Ubiquitous non-invasive WiFi- based breathing estimator. In Proceedings ofthe 16th ACM International Symposium on Mobile Ad Hoc Networking and Computing (MobiHoc’15). 277–286. DOI:https://doi.org/10.1145/2746285.2755969
