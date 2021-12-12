@@ -9,9 +9,9 @@ In this project, we will use Channel State Information (CSI) of WiFi for motion 
 # Required Submissions
 
 * [Proposal](proposal)
-* [Midterm Checkpoint Presentation Slides](http://)
-* [Final Presentation Slides](http://)
-* [Final Presentation Video](http://)
+* [Midterm Checkpoint Presentation Slides](https://drive.google.com/file/d/18RR0y9czv83Gx9dg8D67BZgh3Cry99_d/view?usp=sharing)
+* [Final Presentation Slides](https://drive.google.com/file/d/1A0gdpzgnfYgBQ-FfNs9Pqryt9QZ9sFUC/view?usp=sharing)
+* [Final Presentation Video](https://www.dropbox.com/s/86l5hg0eqhhl65u/GMT20211212-224127_Recording_1920x1080.mp4?dl=0)
 * [Final Report](report)
 
 # Reference
