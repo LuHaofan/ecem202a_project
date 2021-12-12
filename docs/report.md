@@ -117,7 +117,7 @@ Considering CFO, the received phase consists of three parts.
 $$
     \phi = \omega t + \alpha + \theta
 $$
-where $\omega$ is the CFO frequnecy, in other words, the frequency difference between the ocillators at the transmitter and receiver. $\alpha$ is the initial phase difference of the ocillators. $\theta$ is the actual phase caused by the channel.
+where $\omega$ is the CFO frequency, in other words, the frequency difference between the oscillators at the transmitter and receiver. $\alpha$ is the initial phase difference of the oscillators. $\theta$ is the actual phase caused by the channel.
 
 Suppose at timestamp $T_1$, the measured phase is 
 $$
@@ -155,7 +155,7 @@ $$
 2 \pi N_{i}+\Delta \varphi_{i}=\omega \Delta T_{i}
 \end{array}\right.
 $$
-This linear system cannot be solved directly, but we can solve it by Chinese Reminder Theorem. The intuition is that since $N_i$ is integer, we can get a value of $\omega$ for each possible value of $N_i$. There exist a set of $N_i$ that gives the same value of $\omega$. And that value is the CFO we are looking for.
+This linear system cannot be solved directly, but we can solve it by Chinese Reminder Theorem. The intuition is that since $N_i$ is integer, we can get a value of $\omega$ for each possible value of $N_i$. There exists a set of $N_i$ that gives the same value of $\omega$. And that value is the CFO we are looking for.
 
 Because of the limitation of time, this approach has not been tested in the experiment. 
 
